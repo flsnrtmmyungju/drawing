@@ -5,6 +5,7 @@ const ctx = canvas.getContext("2d");
 const colors = document.getElementsByClassName("jsColor");
 const range = document.getElementById("jsRange");
 const mode = document.getElementById("jsMode");
+const saveBtn = document.getElementById("jsSave");
 
 const INITIAL_COLOR = "#2c2c2c";
 const CANVAS_SIZE = 700;
@@ -12,6 +13,10 @@ const CANVAS_SIZE = 700;
 //canvas를 css에서 크기정해줫지만 이안에서도 정해줘야한다.
 canvas.width = CANVAS_SIZE;
 canvas.height = CANVAS_SIZE;
+
+//캔버스사이즈 색깔디폴드 정해주지않으면 배경색칠안하면 배경이투명으로저장
+ctx.fillStyle = "white";
+ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 //그릴 선의 색.
 ctx.strokeStyle = INITIAL_COLOR;
@@ -77,12 +82,32 @@ function handleCanvasClick() {
   }
 }
 
+function handleCM(event) {
+  event.preventDefault();
+}
+function handleSaveClick(event) {
+  // const image = canvas.toDataURL("image/jpeg");
+  // //a태그의 download기능이용위해
+  // const link = document.createElement("a");
+  // link.href = image;
+  // link.download = "drawing[🎨]";
+  // link.click();
+  canvas.toBlob(function(blob) {
+    const link = document.createElement("a");
+    link.download = "drawing[🎨]";
+    link.href = URL.createObjectURL(blob);
+    link.click();
+  });
+}
+
 if (canvas) {
   canvas.addEventListener("mousemove", onMouseMove);
   canvas.addEventListener("mousedown", startPainting);
   canvas.addEventListener("mouseup", stopPainting);
   canvas.addEventListener("mouseleave", stopPainting);
   canvas.addEventListener("click", handleCanvasClick);
+  //우클릭방지
+  canvas.addEventListener("contextmenu", handleCM);
 }
 //                          |이건그냥아무이름이나.
 Array.from(colors).forEach(colors =>
@@ -95,4 +120,8 @@ if (range) {
 
 if (mode) {
   mode.addEventListener("click", handleModeClick);
+}
+
+if (saveBtn) {
+  saveBtn.addEventListener("click", handleSaveClick);
 }
