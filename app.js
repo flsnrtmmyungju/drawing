@@ -4,7 +4,8 @@ const canvas = document.getElementById("jsCanvas");
 const ctx = canvas.getContext("2d");
 const colors = document.getElementsByClassName("jsColor");
 const range = document.getElementById("jsRange");
-const mode = document.getElementById("jsMode");
+const drow = document.getElementById("jsDraw");
+const fill = document.getElementById("jsFill");
 const saveBtn = document.getElementById("jsSave");
 
 const INITIAL_COLOR = "#2c2c2c";
@@ -66,14 +67,11 @@ function handleRangeChange(event) {
   ctx.lineWidth = size;
 }
 
-function handleModeClick(event) {
-  if (filling === true) {
-    filling = false;
-    mode.innerText = "Fill";
-  } else {
-    filling = true;
-    mode.innerText = "Paint";
-  }
+function handleDrowClick(event) {
+  filling = false;
+}
+function handleFillClick(event) {
+  filling = true;
 }
 
 function handleCanvasClick() {
@@ -118,8 +116,11 @@ if (range) {
   range.addEventListener("input", handleRangeChange);
 }
 
-if (mode) {
-  mode.addEventListener("click", handleModeClick);
+if (drow) {
+  drow.addEventListener("click", handleDrowClick);
+}
+if (fill) {
+  fill.addEventListener("click", handleFillClick);
 }
 
 if (saveBtn) {
